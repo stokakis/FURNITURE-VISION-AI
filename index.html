@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FurnitureVision AI – ideaepipla.gr</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-logo">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <rect x="2" y="7" width="20" height="13" rx="2.5" fill="white" opacity="0.95"/>
+          <rect x="6" y="4" width="12" height="5" rx="1.5" fill="white" opacity="0.55"/>
+          <circle cx="7.5" cy="19" r="1.5" fill="#A78BFA"/>
+          <circle cx="16.5" cy="19" r="1.5" fill="#A78BFA"/>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <span class="brand-name">FurnitureVision</span>
+        <span class="brand-badge">AI</span>
+      </div>
+    </div>
+
+    <div class="sidebar-section-label">TOOLS</div>
+    <nav class="sidebar-nav">
+      <button class="nav-item active" data-tab="image-editor">
+        <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/>
+          <path d="M21 15l-5-5L5 21"/>
+        </svg>
+        <span>Image Editor</span>
+      </button>
+      <button class="nav-item" data-tab="batch-edit">
+        <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="5" width="20" height="14" rx="2"/><path d="M16 2H8L6 5h12l-2-3z"/>
+        </svg>
+        <span>Batch Edit</span>
+      </button>
+      <button class="nav-item" data-tab="video-generator">
+        <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="4" width="20" height="16" rx="2.5"/><polygon points="10,8 16,12 10,16" fill="currentColor" stroke="none"/>
+        </svg>
+        <span>Video Generator</span>
+      </button>
+      <button class="nav-item" data-tab="gallery">
+        <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+          <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+        </svg>
+        <span>Gallery</span>
+        <span class="nav-badge" id="galleryNavBadge" style="display:none">0</span>
+      </button>
+    </nav>
+
+    <div class="sidebar-section-label">ASSISTANT</div>
+    <nav class="sidebar-nav">
+      <button class="nav-item" data-tab="claude-ai">
+        <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+        </svg>
+        <span>AI Assistant</span>
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="api-status-widget" id="apiStatusDot">
+        <span class="api-status-dot" id="apiStatusIndicator"></span>
+        <span id="apiStatusLabel">Checking…</span>
+      </div>
+      <div class="sidebar-footer-info">
+        <span>ideaepipla.gr</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ===== MAIN AREA ===== -->
+  <div class="main-wrapper">
+
+    <!-- Top Bar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="sidebar-toggle" id="sidebarToggle" title="Toggle sidebar">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+        </button>
+        <h1 class="topbar-title" id="topbarTitle">Image Editor</h1>
+      </div>
+      <div class="topbar-right">
+        <button class="topbar-btn" id="toggleAssistant" title="Tips & Help">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+          Tips
+        </button>
+      </div>
+    </header>
+
+    <!-- ===== TAB CONTENT ===== -->
+    <main class="content">
+
+      <!-- ─── IMAGE EDITOR ─── -->
+      <section class="tab-section active" id="tab-image-editor">
+        <div class="page-intro">
+          <p>Ανέβασε μια εικόνα επίπλου και πρόσθεσε AI-generated φόντο για το ideaepipla.gr</p>
+        </div>
+
+        <div class="two-col">
+          <!-- Controls -->
+          <div class="card controls-card">
+            <div class="upload-zone" id="editorUploadArea">
+              <div class="upload-zone-inner">
+                <div class="upload-icon-wrap">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                </div>
+                <p class="upload-main">Drag & drop ή κλικ για upload</p>
+                <p class="upload-hint">JPG, PNG – με διαφανές background</p>
+              </div>
+              <input type="file" id="editorFileInput" accept="image/*" hidden />
+            </div>
+
+            <div class="field-group">
+              <label class="field-label">Background Scene</label>
+              <div class="scene-grid" id="editorSceneGrid"></div>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label">Custom Prompt <span class="optional">προαιρετικό</span></label>
+              <textarea class="field-textarea" id="editorCustomPrompt" placeholder="Π.χ. Μοντέρνο σαλόνι με λευκούς τοίχους..." rows="2"></textarea>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label">Image Dimensions</label>
+              <div class="size-grid" id="editorSizeGroup">
+                <button class="size-pill active" data-size="1:1">1:1<span>Square</span></button>
+                <button class="size-pill" data-size="16:9">16:9<span>Landscape</span></button>
+                <button class="size-pill" data-size="9:16">9:16<span>Portrait</span></button>
+                <button class="size-pill" data-size="4:3">4:3<span>Standard</span></button>
+              </div>
+            </div>
+
+            <!-- Model Selector -->
+            <div class="field-group">
+              <label class="field-label" style="display:flex;align-items:center;gap:8px">
+                AI Model
+                <a href="https://router.claude.gg/docs" target="_blank" style="font-size:10px;color:var(--brand);font-weight:500;text-decoration:none;border:1px solid var(--brand);border-radius:4px;padding:1px 6px;">docs ↗</a>
+              </label>
+              <div class="model-selector" id="editorModelSelector"></div>
+              <div class="model-info" id="editorModelInfo"></div>
+            </div>
+
+            <button class="btn-primary" id="editorGenerateBtn" disabled>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+              Generate Image
+            </button>
+          </div>
+
+          <!-- Preview -->
+          <div class="card preview-card">
+            <div class="preview-area" id="editorPreview">
+              <div class="preview-empty">
+                <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                <p>Η εικόνα σου θα εμφανιστεί εδώ</p>
+                <p class="preview-hint">Ανέβασε εικόνα → Επίλεξε σκηνή → Generate</p>
+              </div>
+            </div>
+            <div class="preview-actions" id="editorPreviewActions" style="display:none">
+              <button class="btn-outline" id="editorDownloadBtn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M5 20h14v-2H5v2zm7-18L5.33 9h3.84v6h5.66V9h3.84L12 2z"/></svg>
+                Download
+              </button>
+              <button class="btn-outline" id="editorRegenerateBtn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.65 6.35A7.958 7.958 0 0012 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+                Regenerate
+              </button>
+              <button class="btn-outline" onclick="document.querySelector('.nav-item[data-tab=gallery]').click()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"/></svg>
+                View Gallery
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── BATCH EDIT ─── -->
+      <section class="tab-section" id="tab-batch-edit">
+        <div class="page-intro"><p>Επεξεργάσου πολλές εικόνες επίπλων ταυτόχρονα με AI backgrounds.</p></div>
+
+        <div class="two-col">
+          <div class="card controls-card">
+            <div class="upload-zone upload-zone-sm" id="batchUploadArea">
+              <div class="upload-zone-inner">
+                <div class="upload-icon-wrap">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                </div>
+                <p class="upload-main">Πρόσθεσε πολλαπλές εικόνες</p>
+                <p class="upload-hint">JPG, PNG – επίλεξε πολλαπλά αρχεία</p>
+              </div>
+              <input type="file" id="batchFileInput" accept="image/*" multiple hidden />
+            </div>
+
+            <div class="field-group">
+              <label class="field-label">Σκηνές Φόντου <span class="optional">επίλεξε 1 ή περισσότερες</span></label>
+              <div class="scene-grid scrollable" id="batchSceneGrid"></div>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label">Διαστάσεις</label>
+              <div class="size-grid" id="batchSizeGroup">
+                <button class="size-pill active" data-size="1:1">1:1<span>Square</span></button>
+                <button class="size-pill" data-size="16:9">16:9<span>Wide</span></button>
+                <button class="size-pill" data-size="9:16">9:16<span>Portrait</span></button>
+              </div>
+            </div>
+
+            <!-- Model Selector Batch -->
+            <div class="field-group">
+              <label class="field-label" style="display:flex;align-items:center;gap:8px">
+                AI Model
+                <a href="https://router.claude.gg/docs" target="_blank" style="font-size:10px;color:var(--brand);font-weight:500;text-decoration:none;border:1px solid var(--brand);border-radius:4px;padding:1px 6px;">docs ↗</a>
+              </label>
+              <div class="model-selector" id="batchModelSelector"></div>
+              <div class="model-info" id="batchModelInfo"></div>
+            </div>
+
+            <button class="btn-primary" id="batchGenerateBtn" disabled>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+              Generate All Images
+            </button>
+            <button class="btn-ghost" id="batchClearBtn">Clear All</button>
+          </div>
+
+          <div class="card">
+            <div class="batch-stats">
+              <span class="batch-title" id="batchCount">Images (0)</span>
+              <div class="batch-chips">
+                <span class="chip chip-green" id="batchDone">0 done</span>
+                <span class="chip chip-amber" id="batchPending">0 pending</span>
+              </div>
+            </div>
+
+            <div class="batch-grid" id="batchGrid">
+              <div class="empty-state">
+                <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="2" y="6" width="20" height="14" rx="2"/><path d="M16 2H8L6 6h12l-2-4z"/></svg>
+                <p>Δεν έχουν προστεθεί εικόνες</p>
+              </div>
+            </div>
+
+            <div id="batchResults" style="display:none">
+              <div class="batch-results-header">
+                <span class="field-label" style="margin:0">Αποτελέσματα</span>
+                <div style="display:flex;gap:8px">
+                  <button class="btn-outline" id="downloadAllBtn">Download All</button>
+                  <button class="btn-outline" onclick="document.querySelector('.nav-item[data-tab=gallery]').click()">Gallery</button>
+                </div>
+              </div>
+              <div class="results-grid" id="batchResultsGrid"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── VIDEO GENERATOR ─── -->
+      <section class="tab-section" id="tab-video-generator">
+        <div class="page-intro"><p>Δημιούργησε promotional βίντεο για τα έπιπλά σου με Veo 3.1 AI.</p></div>
+
+        <div class="two-col">
+          <div class="card controls-card">
+            <div class="field-group">
+              <label class="field-label">Reference Image <span class="optional">προαιρετικό – για I2V</span></label>
+              <div class="upload-zone upload-zone-sm" id="videoUploadArea">
+                <div class="upload-zone-inner">
+                  <div class="upload-icon-wrap">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                  </div>
+                  <p class="upload-hint">Upload εικόνα επίπλου</p>
+                </div>
+                <input type="file" id="videoFileInput" accept="image/*" hidden />
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label">Video Description</label>
+              <textarea class="field-textarea" id="videoPrompt" placeholder="Π.χ. Elegant living room sofa in a modern Greek home, cinematic camera pan, warm lighting..." rows="4"></textarea>
+              <div class="quick-chips">
+                <button class="quick-chip" data-prompt="Cinematic product showcase of furniture in modern Greek home interior, slow camera orbit, warm ambient lighting, professional advertisement quality">🎬 Product Showcase</button>
+                <button class="quick-chip" data-prompt="Elegant furniture reveal, white background transforms into cozy Greek home interior, luxury lifestyle">✨ Elegant Reveal</button>
+                <button class="quick-chip" data-prompt="Mediterranean outdoor furniture on a Greek terrace with sea view, golden hour sunlight, gentle breeze">🌊 Mediterranean</button>
+                <button class="quick-chip" data-prompt="Modern bedroom furniture, sunrise to evening timelapse, natural light changes, cozy atmosphere">🌅 Day to Night</button>
+              </div>
+            </div>
+
+            <div class="settings-grid">
+              <div class="field-group">
+                <label class="field-label">Aspect Ratio</label>
+                <div class="radio-row" id="aspectRow">
+                  <label class="radio-pill"><input type="radio" name="aspect" value="16:9" checked>16:9</label>
+                  <label class="radio-pill"><input type="radio" name="aspect" value="9:16">9:16</label>
+                  <label class="radio-pill"><input type="radio" name="aspect" value="1:1">1:1</label>
+                </div>
+              </div>
+              <div class="field-group">
+                <label class="field-label">Resolution</label>
+                <div class="radio-row" id="resolutionRow">
+                  <label class="radio-pill"><input type="radio" name="resolution" value="720p" checked>720p</label>
+                  <label class="radio-pill"><input type="radio" name="resolution" value="1080p">1080p</label>
+                </div>
+              </div>
+              <div class="field-group">
+                <label class="field-label">Duration</label>
+                <select class="field-select" id="videoDuration">
+                  <option value="5">5 seconds</option>
+                  <option value="8" selected>8 seconds</option>
+                  <option value="10">10 seconds</option>
+                </select>
+              </div>
+              <div class="field-group">
+                <label class="field-label">Audio</label>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="videoAudio" checked>
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                  <span class="toggle-label">Generate Audio</span>
+                </label>
+              </div>
+            </div>
+
+            <button class="btn-primary" id="videoGenerateBtn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              Generate Video
+            </button>
+
+            <div class="info-box">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+              <span>
+                Βεβαιώσου ότι τρέχεις από <strong>localhost</strong>.
+                Αν εμφανιστεί 502 σφάλμα, ο Cortex AI server μπορεί να είναι down —
+                <a href="https://cortexai.com.tr/status" target="_blank" style="color:#1D4ED8;font-weight:600;text-decoration:underline;">
+                  Έλεγξε το status εδώ ↗
+                </a>
+              </span>
+            </div>
+          </div>
+
+          <div class="card preview-card">
+            <div class="preview-area" id="videoPreview">
+              <div class="preview-empty">
+                <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="2" y="4" width="20" height="16" rx="2.5"/><polygon points="10,8 16,12 10,16" fill="currentColor" stroke="none" opacity=".4"/></svg>
+                <p>Το βίντεό σου θα εμφανιστεί εδώ</p>
+                <p class="preview-hint">Generation: 30–120 δευτερόλεπτα</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── GALLERY ─── -->
+      <section class="tab-section" id="tab-gallery">
+        <div class="gallery-header">
+          <div class="page-intro" style="margin:0"><p>Όλες οι εικόνες και τα βίντεο — αποθηκευμένα μόνιμα στον browser σου.</p></div>
+          <button class="btn-danger-ghost" id="galleryClearAll">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-3.5l-1-1zM18 7H6v12a2 2 0 002 2h8a2 2 0 002-2V7z"/></svg>
+            Διαγραφή όλων
+          </button>
+        </div>
+
+        <div class="gallery-toolbar">
+          <div class="search-wrap">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            <input type="text" class="search-input" id="gallerySearch" placeholder="Αναζήτηση…" />
+          </div>
+          <select class="field-select gallery-select" id="galleryFilterType">
+            <option value="">Όλοι οι τύποι</option>
+            <option value="image">🖼 Εικόνες</option>
+            <option value="video">🎬 Βίντεο</option>
+          </select>
+          <select class="field-select gallery-select" id="galleryFilterScene">
+            <option value="">Όλες οι σκηνές</option>
+          </select>
+          <span class="gallery-count" id="galleryCount">0 αρχεία</span>
+        </div>
+
+        <div class="gallery-grid" id="galleryGrid">
+          <div class="empty-state empty-state-lg">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+            <p>Δεν υπάρχουν αποτελέσματα</p>
+            <p class="preview-hint">Δημιούργησε εικόνες ή βίντεο και θα εμφανιστούν εδώ αυτόματα</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── AI ASSISTANT ─── -->
+      <section class="tab-section" id="tab-claude-ai">
+        <div class="page-intro"><p>Ρώτησε για product photography, περιγραφές προϊόντων και marketing για το ideaepipla.gr.</p></div>
+
+        <div class="chat-container">
+          <div class="chat-messages" id="chatMessages">
+            <div class="chat-msg assistant">
+              <div class="chat-avatar">AI</div>
+              <div class="chat-bubble">
+                Γεια σου! Είμαι ο AI βοηθός σου για το ideaepipla.gr. Μπορώ να σε βοηθήσω με:<br><br>
+                • <strong>Περιγραφές προϊόντων</strong> για το e-shop<br>
+                • <strong>Συμβουλές φωτογράφισης</strong> επίπλων<br>
+                • <strong>Prompts</strong> για καλύτερα AI αποτελέσματα<br>
+                • <strong>Marketing</strong> για την ελληνική αγορά<br><br>
+                Πώς μπορώ να βοηθήσω;
+              </div>
+            </div>
+          </div>
+          <div class="chat-footer">
+            <div class="chat-suggestions">
+              <button class="suggestion-chip" data-msg="Γράψε μια περιγραφή για ένα μοντέρνο μεταλλικό κρεβάτι">📝 Περιγραφή προϊόντος</button>
+              <button class="suggestion-chip" data-msg="Ποιες σκηνές φόντου δουλεύουν καλύτερα για καναπέδες στο ελληνικό e-shop;">🎨 Καλύτερα φόντα</button>
+              <button class="suggestion-chip" data-msg="Δώσε μου 5 prompts για professional εικόνες επίπλων">💡 AI Prompts</button>
+            </div>
+            <div class="chat-input-row">
+              <textarea class="chat-input" id="chatInput" placeholder="Γράψε το μήνυμά σου…" rows="1"></textarea>
+              <button class="btn-send" id="chatSendBtn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ===== GALLERY MODAL ===== -->
+  <div class="modal-overlay" id="galleryModal" style="display:none">
+    <div class="modal-backdrop" id="galleryModalBg"></div>
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <div class="modal-title" id="galleryModalName">Image</div>
+          <div class="modal-meta">
+            <span id="galleryModalScene"></span>
+            <span>·</span>
+            <span id="galleryModalDate"></span>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <button class="btn-outline" id="galleryModalDownload">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M5 20h14v-2H5v2zm7-18L5.33 9h3.84v6h5.66V9h3.84L12 2z"/></svg>
+            Download
+          </button>
+          <button class="modal-close-btn" id="galleryModalClose">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="modal-media" id="galleryModalMedia"></div>
+    </div>
+  </div>
+
+  <!-- ===== TIPS SIDEBAR ===== -->
+  <aside class="tips-panel" id="assistantSidebar" style="display:none">
+    <div class="tips-header">
+      <h3>Tips & Help</h3>
+      <button class="icon-btn" id="closeSidebar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+      </button>
+    </div>
+    <div class="tips-body">
+      <div class="tip-item">
+        <div class="tip-icon">💡</div>
+        <div><strong>Καλύτεροι Prompts</strong><br>Χρησιμοποίησε "professional e-shop photo", "Greek home interior", "soft natural lighting".</div>
+      </div>
+      <div class="tip-item">
+        <div class="tip-icon">📐</div>
+        <div><strong>Διαστάσεις</strong><br><strong>1:1</strong> για listings, <strong>16:9</strong> για banners, <strong>9:16</strong> για stories.</div>
+      </div>
+      <div class="tip-item">
+        <div class="tip-icon">🖼</div>
+        <div><strong>Gallery</strong><br>Κάθε αρχείο αποθηκεύεται αυτόματα. Κατέβασέ τα ξανά όποτε θέλεις!</div>
+      </div>
+      <div class="tip-item">
+        <div class="tip-icon">🎬</div>
+        <div><strong>Video</strong><br>Για βίντεο χρησιμοποίησε <strong>START_APP.bat</strong> (localhost) αντί για file://.</div>
+      </div>
+      <div class="tip-item">
+        <div class="tip-icon">⚡</div>
+        <div><strong>Rate Limits</strong><br>50 αιτήματα/ώρα, 500/ημέρα. Χρησιμοποίησε Batch για πολλαπλές εικόνες.</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ===== LOADING OVERLAY ===== -->
+  <div class="loading-overlay" id="loadingOverlay" style="display:none">
+    <div class="loading-card">
+      <div class="spinner-ring"></div>
+      <p class="loading-title" id="loadingTitle">Generating…</p>
+      <p class="loading-sub" id="loadingSub">This may take 5–30 seconds</p>
+    </div>
+  </div>
+
+  <!-- ===== TOAST CONTAINER ===== -->
+  <div class="toast-stack" id="toastContainer"></div>
+
+  <!-- ===== SCRIPTS ===== -->
+  <script src="js/config.js"></script>
+  <script src="js/scenes.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/gallery.js"></script>
+  <script src="js/imageEditor.js"></script>
+  <script src="js/batchEdit.js"></script>
+  <script src="js/videoGenerator.js"></script>
+  <script src="js/claudeAI.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
